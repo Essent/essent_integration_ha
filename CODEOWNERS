@@ -437,6 +437,8 @@ build.json @home-assistant/supervisor
 /tests/components/escea/ @lazdavila
 /homeassistant/components/esphome/ @OttoWinter @jesserockz @kbx81 @bdraco
 /tests/components/esphome/ @OttoWinter @jesserockz @kbx81 @bdraco
+/homeassistant/components/essent/ @Essent
+/tests/components/essent/ @Essent
 /homeassistant/components/eufylife_ble/ @bdr99
 /tests/components/eufylife_ble/ @bdr99
 /homeassistant/components/event/ @home-assistant/core
