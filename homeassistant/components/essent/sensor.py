@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorStateClass,
-)
-from homeassistant.const import UnitOfTemperature
+import json
+import logging
+
+import requests
+
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def setup_platform(
@@ -20,20 +22,25 @@ def setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the sensor platform."""
-    add_entities([ExampleSensor()])
+    # pass the api url to the class to make api call
+    add_entities([EssentDynamicPricing("")])
 
 
-class ExampleSensor(SensorEntity):
-    """Representation of a Sensor."""
+class EssentDynamicPricing(SensorEntity):
+    """Representation of Essent Dynamic Pricing API Section."""
 
-    _attr_name = "Example Temperature"
-    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
-    _attr_state_class = SensorStateClass.MEASUREMENT
+    _LOGGER.info("Essent Dynamic Pricing Entity is being added to the entities")
 
-    def update(self) -> None:
-        """Fetch new state data for the sensor.
+    def get_dynamic_price(self, api):
+        """Set the function on the fire."""
+        api_response = requests.get(f"{api}", timeout=5)
+        if api_response.status_code == 200:
+            self.formatted_print(api_response.json())
 
-        This is the only method that should fetch new data for Home Assistant.
-        """
-        self._attr_native_value = 23
+    def formatted_print(self, obj):
+        """Set the function on the fire."""
+        json.dumps(obj, sort_keys=True, indent=4)
+
+    def __init__(self, api):
+        """Set the function on the fire."""
+        self.get_dynamic_price(api)
